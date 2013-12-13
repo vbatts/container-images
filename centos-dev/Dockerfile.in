@@ -1,0 +1,32 @@
+FROM FROM_IMAGE
+ENV container docker
+RUN groupadd -g 990 docker && \
+	yum -y swap -- remove fakesystemd -- install systemd systemd-libs && \
+	yum erase -y vim-minimal &&\
+	yum groupinstall -y "development tools" && \
+	yum install -y --setopt=override_install_langs=en --setopt=tsflags=nodocs \
+		yum-utils \
+		git mercurial bzr quilt \
+		tig \
+		golang \
+		vim-enhanced \
+		sudo \
+		screen \
+		libtool \
+		gtk-doc \
+		intltool \
+		gperf \
+		wget \
+		libgcrypt-devel libcap-devel glib2-devel \
+		glibc-static device-mapper-devel btrfs-progs-devel sqlite-devel \
+		keychain \
+		tito && \
+	yum update -y && \
+	yum clean all && \
+	useradd -m -u 1000 -G wheel DEV_USER && \
+	sed -ri 's/^(%wheel.*)(ALL)$/\1NOPASSWD: \2/' /etc/sudoers && \
+	yum update -y
+USER DEV_USER
+ENV HOME /home/DEV_USER
+WORKDIR /home/DEV_USER
+CMD bash -l

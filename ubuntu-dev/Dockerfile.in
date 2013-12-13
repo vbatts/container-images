@@ -1,0 +1,20 @@
+FROM FROM_IMAGE
+
+RUN useradd -m -u 1000 -G sudo DEV_USER && \
+	sed -ri 's/^(%sudo.*)(ALL)$/\1NOPASSWD: \2/' /etc/sudoers && \
+	apt-get update && \
+	apt-get install -y \
+		git \
+		golang \
+		mercurial \
+		bzr \
+		vim \
+		sudo \
+		screen \
+		python-tox \
+		keychain && \
+	apt-get dist-upgrade -y
+USER DEV_USER
+ENV HOME /home/DEV_USER
+WORKDIR /home/DEV_USER
+CMD bash -l
