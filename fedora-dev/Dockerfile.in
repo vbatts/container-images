@@ -33,7 +33,8 @@ RUN yum erase -y vim-minimal && \
 	tito && \
 	yum update -y && \
 	yum clean all && \
-	useradd -m -u 1000 -G wheel,mock DEV_USER && \
+	groupadd -g DEV_GID DEV_USER && \
+	useradd -m -u DEV_UID -g DEV_GID -G wheel,mock DEV_USER && \
 	sed -ri 's/^(%wheel.*)(ALL)$/\1NOPASSWD: \2/' /etc/sudoers
 USER DEV_USER
 ENV HOME /home/DEV_USER
