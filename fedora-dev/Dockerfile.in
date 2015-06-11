@@ -1,10 +1,10 @@
 FROM FROM_IMAGE
 
-RUN yum erase -y vim-minimal && \
-	groupadd -g 990 docker && \
-	yum groupinstall -y "development tools" && \
-	yum install -y --setopt=override_install_langs=en --setopt=tsflags=nodocs \
-	yum-utils \
+RUN dnf erase -y vim-minimal
+RUN groupadd -g 990 docker
+RUN dnf groupinstall -y "development tools"
+RUN dnf install -y --setopt=override_install_langs=en --setopt=tsflags=nodocs \
+	dnf-plugins-core \
 	git \
 	golang \
 	mercurial \
@@ -31,9 +31,9 @@ RUN yum erase -y vim-minimal && \
 	dbus-devel \
 	keychain \
 	tito && \
-	yum update -y && \
-	yum clean all && \
-	groupadd -g DEV_GID DEV_USER && \
+	dnf update -y && \
+	dnf clean all
+RUN groupadd -g DEV_GID DEV_USER && \
 	useradd -m -u DEV_UID -g DEV_GID -G wheel,mock DEV_USER && \
 	sed -ri 's/^(%wheel.*)(ALL)$/\1NOPASSWD: \2/' /etc/sudoers
 USER DEV_USER
