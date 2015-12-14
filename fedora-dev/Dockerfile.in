@@ -1,40 +1,45 @@
 FROM FROM_IMAGE
 
-RUN dnf erase -y vim-minimal
-RUN groupadd -g 990 docker
-RUN dnf groupinstall -y "development tools"
-RUN dnf install -y --setopt=override_install_langs=en --setopt=tsflags=nodocs \
-	dnf-plugins-core \
-	git \
-	golang \
-	mercurial \
-	bzr \
-	vim-enhanced \
-	quilt \
-	fedora-packager \
-	sudo \
-	screen \
-	libtool \
-	gtk-doc \
-	intltool \
-	libgcrypt-devel \
-	gperf \
-	libcap-devel \
-	wget \
-	tig \
-	glibc-static \
-	device-mapper-devel \
-	btrfs-progs-devel \
-	sqlite-devel \
-	glib2-devel \
-	libmount-devel \
-	dbus-devel \
-	keychain \
-	tito && \
+RUN groupadd -g 990 docker && \
+	groupadd -g DEV_GID DEV_USER && \
+	dnf erase -y vim-minimal && \
+	dnf groupinstall -y "development tools" && \
+	dnf install -y --setopt=override_install_langs=en --setopt=tsflags=nodocs \
+		dnf-plugins-core \
+		git \
+		golang \
+		mercurial \
+		bzr \
+		vim-enhanced \
+		quilt \
+		fedora-packager \
+		sudo \
+		screen \
+		libtool \
+		gtk-doc \
+		intltool \
+		libgcrypt-devel \
+		/usr/bin/ps \
+		gpg \
+		/usr/bin/mvn \
+		gperf \
+		libcap-devel \
+		wget \
+		tig \
+		glibc-static \
+		device-mapper-devel \
+		btrfs-progs-devel \
+		libmount-devel \
+		sqlite-devel \
+		glib2-devel \
+		irb \
+		libmount-devel \
+		dbus-devel \
+		keychain \
+		tito && \
 	dnf update -y && \
-	dnf clean all
-RUN groupadd -g DEV_GID DEV_USER && \
-	useradd -m -u DEV_UID -g DEV_GID -G wheel,mock DEV_USER && \
+	dnf clean all && \
+	useradd -m -u DEV_UID -g DEV_GID -G wheel,mock,docker DEV_USER && \
 	sed -ri 's/^(%wheel.*)(ALL)$/\1NOPASSWD: \2/' /etc/sudoers
 USER DEV_USER
 ENV HOME /home/DEV_USER
