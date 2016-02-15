@@ -9,6 +9,7 @@ RUN groupadd -g 990 docker && \
 		git \
 		golang \
 		mercurial \
+		iputils \
 		bzr \
 		vim-enhanced \
 		quilt \
