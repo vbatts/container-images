@@ -1,0 +1,13 @@
+[Unit]
+Description=slack-irc bridge service
+#Documentation=
+After=network.target
+
+[Service]
+#Type=notify
+ExecStart=/usr/bin/slack-irc --config /etc/slack-irc/config.json
+Restart=on-failure
+RestartSec=42s
+
+[Install]
+WantedBy=multi-user.target

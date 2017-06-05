@@ -1,0 +1,49 @@
+[
+  // Bot 1 (minimal configuration):
+  {
+    "nickname": "test2",
+    "server": "irc.testbot.org",
+    "token": "slacktoken2",
+    "channelMapping": {
+      "#other-slack": "#new-irc-channel"
+    }
+  },
+
+  // Bot 2 (advanced options):
+  {
+    "nickname": "test",
+    "server": "irc.bottest.org",
+    "token": "slacktoken", // Your bot user's token
+    "avatarUrl": "https://robohash.org/$username.png?size=48x48", // Set to false to disable Slack avatars
+    "slackUsernameFormat": "<$username>", // defaults to "$username (IRC)"; "$username" ovverides so there's no suffix or prefix at all
+    "autoSendCommands": [ // Commands that will be sent on connect
+      ["PRIVMSG", "NickServ", "IDENTIFY password"],
+      ["MODE", "test", "+x"],
+      ["AUTH", "test", "password"]
+    ],
+    "channelMapping": { // Maps each Slack-channel to an IRC-channel, used to direct messages to the correct place
+      "#slack": "#irc channel-password", // Add channel keys after the channel name
+      "privategroup": "#other-channel" // No hash in front of private groups
+    },
+    "ircOptions": { // Optional node-irc options
+      "floodProtection": false, // On by default
+      "floodProtectionDelay": 1000 // 500 by default
+    },
+    // Makes the bot hide the username prefix for messages that start
+    // with one of these characters (commands):
+    "commandCharacters": ["!", "."],
+    // Prevent messages posted by Slackbot (e.g. Slackbot responses)
+    // from being posted into the IRC channel:
+    "muteSlackbot": true, // Off by default
+    // Sends messages to Slack whenever a user joins/leaves an IRC channel:
+    "ircStatusNotices": {
+      "join": false, // Don't send messages about joins
+      "leave": true
+    },
+    // Prevent messages posted by users on Slack/IRC from being forwarded:
+    "muteUsers": {
+      "irc": ["irc-user"],
+      "slack: ["slack-user"]
+    }
+  }
+]
