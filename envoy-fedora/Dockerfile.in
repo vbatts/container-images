@@ -1,0 +1,7 @@
+FROM FROM_IMAGE
+
+RUN dnf install -y 'dnf-command(copr)' && \
+	dnf copr enable -y vbatts/envoy && \
+	dnf install -y envoy && \
+	dnf update -y && \
+	dnf clean all
