@@ -1,0 +1,12 @@
+[Unit]
+Description=fast remote file copy program daemon
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+EnvironmentFile=/etc/podman.d/rsyncd.conf
+ExecStart=/usr/bin/podman run $PODMAN_RUN_ARGS rsyncd
+
+[Install]
+WantedBy=multi-user.target
+
