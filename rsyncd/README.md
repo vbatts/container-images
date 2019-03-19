@@ -1,5 +1,7 @@
 # rsyncd container
 
+basic rsync daemon
+
 ## build it
 
 ```shell
